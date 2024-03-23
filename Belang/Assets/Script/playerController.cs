@@ -10,7 +10,6 @@ public class playerController : MonoBehaviour
     public float fall;
     Rigidbody rbChar;
     Animator animChar;
-    public Transform camera;
     bool facingRight;
 
     // Jump
