@@ -36,7 +36,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Land
-  m_Speed: 1
+  m_Speed: 0.9
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 5677910941320391280}
@@ -434,10 +434,7 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: grounded
-    m_EventTreshold: 0
+  m_Conditions: []
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2396345201927866215}
   m_Solo: 0
@@ -446,8 +443,8 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0.25000003
   m_TransitionOffset: 0
-  m_ExitTime: 0.077492975
-  m_HasExitTime: 0
+  m_ExitTime: 0.029364377
+  m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -497,9 +494,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.14438997
+  m_TransitionDuration: 0.14438996
   m_TransitionOffset: 0
-  m_ExitTime: 0.03173158
+  m_ExitTime: 0.0071440614
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
