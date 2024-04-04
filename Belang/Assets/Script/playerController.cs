@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class playerController : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 5f;
+    [SerializeField] float rotationSpeed = 500f;
+
+    Quaternion targetRotation;
 
     CameraController cameraController;
 
@@ -18,10 +21,19 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
+        float moveAmount = Mathf.Abs(h) + Mathf.Abs(v);
+
         var moveInput = (new Vector3(h, 0, v)).normalized;
 
-        var moveDir = cameraController.transform.rotation * moveInput;
+        var moveDir = cameraController.PlanarRotation * moveInput;
 
-        transform.position += moveDir * moveSpeed * Time.deltaTime;
+        if(moveAmount > 0 ){
+            transform.position += moveDir * moveSpeed * Time.deltaTime;
+            targetRotation= Quaternion.LookRotation(moveDir);
+        }
+
+       transform.rotation =  Quaternion.RotateTowards(transform.rotation,targetRotation,rotationSpeed * Time.deltaTime);
+
+        
     }
 }
