@@ -2,79 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class playerController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    //movement variable
-    public float runSpeed; //run
-    public float speedRun; //speedrun
-    public float fall;
-    Rigidbody rbChar;
-    Animator animChar;
-    bool facingRight;
+    [SerializeField] float moveSpeed = 5f;
 
-    // Jump
-    bool grounded = false;
-    Collider[] groundCollisions;
-    float groundCheckRadius = 0.1f;
-    public LayerMask groundLayer;
-    public Transform groundCheck;
-    public float jumpHeight;
+    CameraController cameraController;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        rbChar = GetComponent<Rigidbody>();
-        animChar = GetComponent<Animator>();
-        facingRight = true;
+        cameraController = Camera.main.GetComponent<CameraController>();
     }
 
-    // Update is called once per frame, faster/slower
-    void Update()
+    private void Update()
     {
-        
-    }
-    
-    // is called fix after physic run
-    void FixedUpdate()
-    {
-        if(grounded && Input.GetAxis("Jump") > 0)
-        {
-            grounded = false;
-            animChar.SetFloat("verticalSpeed", fall);
-            animChar.SetBool("grounded", grounded);
-            rbChar.AddForce(new Vector3(0,jumpHeight,0));
-        }
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
 
-        groundCollisions = Physics.OverlapSphere(groundCheck.position, groundCheckRadius, groundLayer);
-        if(groundCollisions.Length > 0) grounded = true;
-        else grounded = false;
+        var moveInput = (new Vector3(h, 0, v)).normalized;
 
-        animChar.SetBool("grounded", grounded);
+        var moveDir = cameraController.transform.rotation * moveInput;
 
-        float move = Input.GetAxis("Horizontal");
-        animChar.SetFloat("speed",Mathf.Abs(move));
-
-        float speedrun = Input.GetAxisRaw("Fire3");
-        animChar.SetFloat("speedrun",speedrun);
-
-        if(speedrun > 0 )
-        {
-            rbChar.velocity = new Vector3(move*speedRun, rbChar.velocity.y, 0);
-        }
-        else
-        {
-            rbChar.velocity = new Vector3(move*runSpeed, rbChar.velocity.y, 0);
-        }
-
-        if(move > 0 && !facingRight) Flip();
-        else if (move < 0 && facingRight) Flip();
-    }
-
-    void Flip()
-    {
-        facingRight = !facingRight;
-        Vector3 thScale = transform.localScale;
-        thScale.z *= -1;
-        transform.localScale = thScale;
+        transform.position += moveDir * moveSpeed * Time.deltaTime;
     }
 }
