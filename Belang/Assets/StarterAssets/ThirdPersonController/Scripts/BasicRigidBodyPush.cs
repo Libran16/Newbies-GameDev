@@ -17,7 +17,7 @@ public class BasicRigidBodyPush : MonoBehaviour
 		if (canPush) 
 		{
 			PushRigidBodies(hit); // setelah ini cari logika buat dorong box
-			anim.SetBool("Push", false);
+			anim.SetBool("Push", true);
 		}
 	}
 
