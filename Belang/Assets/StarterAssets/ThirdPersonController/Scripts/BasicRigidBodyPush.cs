@@ -15,23 +15,23 @@ public class BasicRigidBodyPush : MonoBehaviour
 		anim = GetComponent<Animator>();
 		isPushHash = Animator.StringToHash("Push");
 	}
-	
+
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		if (canPush) 
+		if (canPush && hit.gameObject.CompareTag("Cube")) 
 		{
-			PushRigidBodies(hit);
-			if (Input.GetKeyDown(KeyCode.P))
+			if (Input.GetKeyDown(KeyCode.F))
 			{
+				PushRigidBodies(hit);
 				anim.SetBool(isPushHash, true);	
 			}
-			if (Input.GetKeyDown(KeyCode.L))
+			else if (Input.GetKeyDown(KeyCode.E))
 			{
-				anim.SetBool(isPushHash, false);
-			}
+				anim.SetBool(isPushHash, false);	
+			}		
 		}
 	}
-	
+
 	private void PushRigidBodies(ControllerColliderHit hit)
 	{
 		// https://docs.unity3d.com/ScriptReference/CharacterController.OnControllerColliderHit.html

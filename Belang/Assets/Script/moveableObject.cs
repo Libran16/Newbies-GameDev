@@ -11,42 +11,46 @@ public class moveableObject : MonoBehaviour
     public LayerMask layer;
     bool turn = false;
     int isPushHash;
-    public ThirdPersonController thirdPersonController;
+    private ThirdPersonController thirdPersonController;
 
     void Start()
     {
         anim = GetComponent<Animator>();
+        thirdPersonController = GetComponent<ThirdPersonController>();
         isPushHash = Animator.StringToHash("Push");
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            anim.SetBool(isPushHash, true);
-            turn = true;
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            anim.SetBool(isPushHash, false);
-            turn = false;
+            if(turn)
+            {
+                anim.SetBool(isPushHash, false);  
+                turn = false;
+            }
+            else{
+                anim.SetBool(isPushHash, true);
+                turn = true;
+            }
         }
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    public void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Rigidbody _rigg = hit.collider.attachedRigidbody;
 
         if(_rigg != null)
         {
             if(turn == true)
-            {
+            {             
                 Vector3 forceDirection = hit.gameObject.transform.position - transform.position;
                 forceDirection.y = 0;
                 forceDirection.Normalize();
 
                 _rigg.AddForceAtPosition(forceDirection * pushForce, transform.position, ForceMode.Impulse);
-            }
+            } 
         }
+        
     }
 }
