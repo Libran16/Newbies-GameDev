@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
+using StarterAssets;
 
 public class BasicRigidBodyPush : MonoBehaviour
 {
@@ -6,18 +8,27 @@ public class BasicRigidBodyPush : MonoBehaviour
 	public bool canPush;
 	Animator anim;
 	[Range(0.5f, 5f)] public float strength = 1.1f;
+	int isPushHash;
 
-	private void Start()
+	void Start()
 	{
 		anim = GetComponent<Animator>();
+		isPushHash = Animator.StringToHash("Push");
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		if (canPush) 
+		if (canPush && hit.gameObject.CompareTag("Cube")) 
 		{
-			PushRigidBodies(hit); // setelah ini cari logika buat dorong box
-			//anim.SetBool("Push", true);
+			if (Input.GetKeyDown(KeyCode.F))
+			{
+				PushRigidBodies(hit);
+				anim.SetBool(isPushHash, true);	
+			}
+			else if (Input.GetKeyDown(KeyCode.E))
+			{
+				anim.SetBool(isPushHash, false);	
+			}		
 		}
 	}
 
@@ -30,7 +41,7 @@ public class BasicRigidBodyPush : MonoBehaviour
 		if (body == null || body.isKinematic) return;
 
 		// make sure we only push desired layer(s)
-		var bodyLayerMask = 1 << body.gameObject.layer;
+		var bodyLayerMask = 3 << body.gameObject.layer;
 		if ((bodyLayerMask & pushLayers.value) == 0) return;
 
 		// We dont want to push objects below us
